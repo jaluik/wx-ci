@@ -1,0 +1,22 @@
+{
+  "name": "wx-ci",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:jaluik/wx-ci.git",
+  "author": "jaluik <cqzhengmouren@gmail.com>",
+  "keywords": [
+    "wx-ci",
+    "wechat",
+    "miniprogram",
+    "ci",
+    "remax",
+    "taro"
+  ],
+  "homepage": "https://github.com/jaluik",
+  "license": "MIT",
+  "devDependencies": {
+    "inquirer": "^7.3.3",
+    "miniprogram-ci": "^1.0.83",
+    "ora": "^5.1.0"
+  }
+}
