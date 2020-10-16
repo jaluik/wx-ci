@@ -1,7 +1,10 @@
 {
   "name": "wx-ci",
-  "version": "0.0.1",
-  "main": "index.js",
+  "version": "0.0.3",
+  "main": "bin/wx-ci.js",
+  "bin": {
+    "wx-ci": "bin/wx-ci.js"
+  },
   "repository": "git@github.com:jaluik/wx-ci.git",
   "author": "jaluik <cqzhengmouren@gmail.com>",
   "keywords": [
@@ -9,6 +12,7 @@
     "wechat",
     "miniprogram",
     "ci",
+    "cli",
     "remax",
     "taro"
   ],
