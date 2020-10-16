@@ -3,7 +3,7 @@ const fs = require('fs');
 const ora = require('ora');
 
 exports.checkConfigFile = () => {
-  const configPath = path.resolve(`${process.cwd}`, 'wxci.config.js');
+  const configPath = path.resolve(`${process.cwd()}`, 'wxci.config.js');
   return fs.existsSync(configPath);
 };
 

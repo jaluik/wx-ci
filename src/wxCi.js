@@ -1,6 +1,10 @@
 const fs = require('fs');
 const path = require('path');
+const inquirer = require('inquirer');
 const { program } = require('commander');
+const ci = require('miniprogram-ci');
+const childProcess = require('child_process');
+const ora = require('ora');
 const projectConfig = require('../package.json');
 const { validate } = require('schema-utils');
 const schema = require('./schema.json');
@@ -79,7 +83,7 @@ class WxCi {
         warn("配置文件不存在，请执行 'wx-ci init'生成配置文件");
         return;
       }
-      const config = require(path.resolve(`${process.cwd}`, 'wxci.config.js'))
+      const config = require(path.resolve(`${process.cwd()}`, 'wxci.config.js'))
         .default;
       const baseConfig = require('./wxci.config').default;
       //完整配置文件
@@ -92,7 +96,7 @@ class WxCi {
           name: 'version',
           message: '请输入版本号',
           default: function () {
-            return config.version || defaultVersion;
+            return completeConfig.version || defaultVersion;
           },
         },
         {
@@ -100,7 +104,7 @@ class WxCi {
           name: 'desc',
           message: '请输入上传描述',
           default: function () {
-            return config.desc || defaultDesc;
+            return completeConfig.desc || defaultDesc;
           },
         },
       ];
