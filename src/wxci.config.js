@@ -6,9 +6,9 @@ module.exports = {
   appid: '',
   type: 'miniProgram',
   //小程序生成目录
-  projectPath: `${process.cwd()}/dist`,
+  projectPath: 'dist',
   //小程序钥匙目录
-  privateKeyPath: `${process.cwd()}/miniprogram.upload.key`,
+  privateKeyPath: 'miniprogram.upload.key',
   /** ---上传前执行脚本-- */
   preCommand: [
     {
