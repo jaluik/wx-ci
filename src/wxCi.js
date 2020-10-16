@@ -18,7 +18,7 @@ const defaultDesc = `${
 class WxCi {
   constructor() {
     program
-      .version(projectConfig.version)
+      .version(projectConfig.version, '-v, --version', '输出当前版本号')
       .option('-y, --yes', '以默认值初始化配置文件');
     program.parse(process.argv, { from: 'user' });
   }
