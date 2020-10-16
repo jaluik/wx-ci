@@ -1,14 +1,11 @@
-# wx-ci
+# wx-ci <img src="https://img.shields.io/badge/wx--ci-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC-green">
+
+[![author](https://img.shields.io/badge/author-jaluik-f66.svg)](https://github.com/jaluik/wx-ci)
+[![node](https://img.shields.io/badge/node-%3E%3D%206.9.0-3c9.svg)](https://github.com//jaluik/wx-ci)
+[![npm](https://img.shields.io/badge/npm-%3E%3D%204.5.0-3c9.svg)](https://github.com/jaluik/wx-ci)
+[![license](https://img.shields.io/badge/license-MIT-09f.svg)](https://github.com/JowayYoung/jaluik/wx-ci)
 
 小程序一键上传脚本，开发者可不打开小程序开发者工具，独立使用 wx-ci 进行小程序代码的打包、上传等操作。
-
-[![npm][npm]][npm-url]
-[![node][node]][node-url]
-[![deps][deps]][deps-url]
-[![tests][tests]][tests-url]
-[![coverage][cover]][cover-url]
-[![chat][chat]][chat-url]
-[![size][size]][size-url]
 
 ## 安装
 
@@ -46,6 +43,10 @@ wx-ci init
 wx-ci
 ```
 
+执行这段脚本，如果最后提示上传成功，恭喜，小程序已经成功上传啦！
+
+## 可用配置
+
 你可以根据项目需要手动修改`wx-ci`.
 可配置选项如下
 |字段名|类型|必填|默认值|描述|
@@ -61,22 +62,24 @@ wx-ci
 |**`setting`**|`setting`|false|{}|小程序每次上传的备注信息(上传时可修改)|
 
 `command`可配置选项如下
-|字段名|类型|必填|默认值|描述|
-|:--:|:--:|:-----:|:--------:|:----------:|
-|**`command`**|`{String}`|true|-|执行的命令|
-|**`desc`**|`{String}`|false|-|执行命令的描述|
+
+|    字段名     |    类型    | 必填  | 默认值 |      描述      |
+| :-----------: | :--------: | :---: | :----: | :------------: |
+| **`command`** | `{String}` | true  |   -    |   执行的命令   |
+|  **`desc`**   | `{String}` | false |   -    | 执行命令的描述 |
 
 `setting`可配置选项如下
-|字段名|类型|必填|默认值|描述|
-|:--:|:--:|:-----:|:--------:|:----------:|
-|**`es6`**|`{boolean}`|false|true|对应于微信开发者工具的 "es6 转 es5"|
-|**`es7`**|`{boolean}`|false|false|对应于微信开发者工具的 "增强编译"|
-|**`minifyJS`**|`{boolean}`|false|false|上传时压缩 JS 代码|
-|**`minifyWXML`**|`{boolean}`|false|false|上传时压缩 WXML 代码|
-|**`minifyWXSS`**|`{boolean}`|false|false|上传时压缩 WXSS 代码|
-|**`minify`**|`{boolean}`|false|false|上传时压缩所有代码，对应于微信开发者工具的 "上传时压缩代码"|
-|**`codeProtect`**|`{boolean}`|false|false|对应于微信开发者工具的 "上传时进行代码保护"|
-|**`autoPrefixWXSS`**|`{boolean}`|false|false|对应于微信开发者工具的 "上传时样式自动补全"|
+
+|        字段名        |    类型     | 必填  | 默认值 |                            描述                             |
+| :------------------: | :---------: | :---: | :----: | :---------------------------------------------------------: |
+|      **`es6`**       | `{boolean}` | false |  true  |             对应于微信开发者工具的 "es6 转 es5"             |
+|      **`es7`**       | `{boolean}` | false | false  |              对应于微信开发者工具的 "增强编译"              |
+|    **`minifyJS`**    | `{boolean}` | false | false  |                     上传时压缩 JS 代码                      |
+|   **`minifyWXML`**   | `{boolean}` | false | false  |                    上传时压缩 WXML 代码                     |
+|   **`minifyWXSS`**   | `{boolean}` | false | false  |                    上传时压缩 WXSS 代码                     |
+|     **`minify`**     | `{boolean}` | false | false  | 上传时压缩所有代码，对应于微信开发者工具的 "上传时压缩代码" |
+|  **`codeProtect`**   | `{boolean}` | false | false  |         对应于微信开发者工具的 "上传时进行代码保护"         |
+| **`autoPrefixWXSS`** | `{boolean}` | false | false  |         对应于微信开发者工具的 "上传时样式自动补全"         |
 
 默认配置表如下:
 
