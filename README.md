@@ -18,7 +18,7 @@ npm install wx-ci -g
 或者
 
 ```console
-yarn global wx-ci
+yarn global add wx-ci
 ```
 
 查看版本，表示安装成功
