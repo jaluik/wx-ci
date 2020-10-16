@@ -1,4 +1,6 @@
-const { program, command } = require('commander');
+const fs = require('fs');
+const path = require('path');
+const { program } = require('commander');
 const projectConfig = require('../package.json');
 const { validate } = require('schema-utils');
 const schema = require('./schema.json');
@@ -37,10 +39,28 @@ class WxCi {
   }
 
   /**
-   * 生成配置文件
+   * 生成默认配置文件
    */
-  generateDefault() {
-    console.log('生成默认');
+  async generateDefault() {
+    info('正在生成配置文件');
+    try {
+      await new Promise((resolve, reject) => {
+        const rs = fs.createReadStream(
+          path.resolve(__dirname, '../src/wxci.config.js')
+        );
+        const ws = fs.createWriteStream(
+          path.resolve(process.cwd(), 'wxci.config.js')
+        );
+        rs.pipe(ws);
+        ws.on('close', resolve);
+        ws.on('error', reject);
+      });
+
+      success('生成配置文件成功');
+    } catch (err) {
+      fail('生成配置文件失败');
+      fail(err.message);
+    }
   }
 
   /**
@@ -87,8 +107,6 @@ class WxCi {
       info(completeConfig.desc);
       const answer = await inquirer.prompt(questions);
       const { version, desc } = answer;
-      const spinner = ora({ text: '正在安装依赖\n', spinner: 'moon' }).start();
-      const packageSpinner = ora({ text: '正在打包中\n', spinner: 'moon' });
 
       const {
         appid,
@@ -96,31 +114,30 @@ class WxCi {
         projectPath,
         privateKeyPath,
         setting,
-        preCommand,
+        preCommand = [],
       } = completeConfig;
 
-      await new Promise((resolve, reject) => {
-        childProcess.exec('yarn', { cwd: process.cwd() }, (e) => {
-          if (e === null) {
-            spinner.succeed('安装依赖包成功');
-            packageSpinner.start();
-            resolve();
-          } else {
-            reject(e.message);
-          }
+      const preCommandPromises = preCommand.map((item) => () => {
+        const spinner = ora({
+          text: `正在${item.desc}\n`,
+          spinner: 'moon',
+        }).start();
+        return new Promise((resolve, reject) => {
+          childProcess.exec(item.command, { cwd: process.cwd() }, (e) => {
+            if (e === null) {
+              spinner.succeed('安装依赖包成功');
+              resolve();
+            } else {
+              reject(e.message);
+            }
+          });
         });
       });
 
-      await new Promise((resolve, reject) => {
-        childProcess.exec('yarn build', { cwd: process.cwd() }, (e) => {
-          if (e === null) {
-            packageSpinner.succeed('打包成功');
-            resolve();
-          } else {
-            reject(e.message);
-          }
-        });
-      });
+      for (let fn of preCommandPromises) {
+        await fn();
+      }
+
       info('正在上传中');
       const project = new ci.Project({
         appid,
