@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "properties": {
+    "appid": {
+      "description": "小程序appid",
+      "type": "string"
+    },
+    "projectPath": {
+      "description": "小程序生成目录",
+      "type": "string"
+    },
+    "privateKeyPath": {
+      "description": "小程序钥匙目录",
+      "type": "string"
+    },
+    "preCommand": {
+      "description": "上传前执行脚本",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "description": "执行命令",
+            "type": "string"
+          },
+          "desc": {
+            "description": "执行命令的说明文字",
+            "desc": "string"
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}
