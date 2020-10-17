@@ -35,7 +35,7 @@ wx-ci -v
 wx-ci init
 ```
 
-执行完成后，会在当前目录生成 wx.config.js 配置文件
+执行完成后，会在当前目录生成 wxci.config.js 配置文件
 
 在 package.json 同级目录执行上传流程
 
@@ -57,8 +57,8 @@ wx-ci
 |**`projectPath`**|`{String}`|true|dist|小程序生成目录|
 |**`privateKeyPath`**|`{String}`|true|miniprogram.upload.key|小程序钥匙目录，需要在小程序后台下载|
 |**`preCommand`**|`command[]`|false|[]|上传小程序源码前执行的脚本|
-|**`version`**|`{String}`|false|1.0.0|小程序每次上传的版本号(上传时可修改)|
-|**`desc`**|`{String}`|false|{m}月{day}日更新|小程序每次上传的备注信息(上传时可修改)|
+|**`version`**|`{String}`|false|1.0.0|小程序默认上传的版本号(上传时可修改)|
+|**`desc`**|`{String}`|false|{m}月{day}日更新|小程序默认上传的备注信息(上传时可修改)|
 |**`setting`**|`setting`|false|{}|小程序每次上传的备注信息(上传时可修改)|
 
 `command`可配置选项如下
