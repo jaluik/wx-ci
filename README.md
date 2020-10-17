@@ -9,6 +9,8 @@
 
 ## 安装
 
+### 方式一：全局安装（**推荐**）
+
 使用前你需要安装 `wx-ci`脚手架工具:
 
 ```console
@@ -27,6 +29,24 @@ yarn global add wx-ci
 wx-ci -v
 ```
 
+### 方式二：本地安装
+
+```console
+npm install wx-ci --save-dev
+```
+
+或者
+
+```console
+yarn  add wx-ci -D
+```
+
+查看版本，表示安装成功
+
+```console
+npx wx-ci -v
+```
+
 ## 快速开始
 
 快速生成配置文件
@@ -35,7 +55,7 @@ wx-ci -v
 wx-ci init
 ```
 
-执行完成后，会在当前目录生成 wxci.config.js 配置文件
+执行完成后，会在当前目录生成 wxci.config.js 配置文件，**各参数含义均有备注，也可参考本文档**
 
 在 package.json 同级目录执行上传流程
 
@@ -59,7 +79,7 @@ wx-ci
 |**`preCommand`**|`command[]`|false|[]|上传小程序源码前执行的脚本|
 |**`version`**|`{String}`|false|1.0.0|小程序默认上传的版本号(上传时可修改)|
 |**`desc`**|`{String}`|false|{m}月{day}日更新|小程序默认上传的备注信息(上传时可修改)|
-|**`setting`**|`setting`|false|{}|小程序每次上传的备注信息(上传时可修改)|
+|**`setting`**|`setting`|false|{}|小程序每次上传的项目配置信息|
 
 `command`可配置选项如下
 
@@ -72,7 +92,7 @@ wx-ci
 
 |        字段名        |    类型     | 必填  | 默认值 |                            描述                             |
 | :------------------: | :---------: | :---: | :----: | :---------------------------------------------------------: |
-|      **`es6`**       | `{boolean}` | false |  true  |             对应于微信开发者工具的 "es6 转 es5"             |
+|      **`es6`**       | `{boolean}` | false |  true  |          对应于微信开发者工具的 "es6 转 es6" es5"           |
 |      **`es7`**       | `{boolean}` | false | false  |              对应于微信开发者工具的 "增强编译"              |
 |    **`minifyJS`**    | `{boolean}` | false | false  |                     上传时压缩 JS 代码                      |
 |   **`minifyWXML`**   | `{boolean}` | false | false  |                    上传时压缩 WXML 代码                     |

@@ -1,6 +1,6 @@
 {
   "name": "wx-ci",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "main": "bin/wx-ci.js",
   "bin": {
     "wx-ci": "bin/wx-ci.js"
