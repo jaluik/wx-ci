@@ -16,6 +16,7 @@
     "remax",
     "taro"
   ],
+  "description": "微信小程序一键上传脚本，开发者可不打开小程序开发者工具，独立使用 wx-ci 进行小程序代码的打包、上传等操作。",
   "homepage": "https://github.com/jaluik",
   "license": "MIT",
   "dependencies": {
