@@ -26,7 +26,7 @@ class WxCi {
   /**
    * 根据参数初始化
    */
-  run(command) {
+  run(command: string) {
     if (!command) {
       this.deploy();
       return;
@@ -47,14 +47,14 @@ class WxCi {
   /**
    * 生成执行上传前的命令数组
    */
-  async execPreCommand(command) {
+  async execPreCommand(command: { desc: string; command: string }[]) {
     const promiseFn = command.map((item) => () => {
       return new Promise((resolve, reject) => {
         const spinner = ora({
           text: `正在${item.desc}\n`,
           spinner: 'moon',
         }).start();
-        childProcess.exec(item.command, { cwd: process.cwd() }, (e) => {
+        childProcess.exec(item.command, { cwd: process.cwd() }, (e: Error) => {
           if (e === null) {
             spinner.succeed(`${item.desc}成功\n`);
             resolve();
