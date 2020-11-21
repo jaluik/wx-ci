@@ -7,6 +7,9 @@
   },
   "repository": "git@github.com:jaluik/wx-ci.git",
   "author": "jaluik <cqzhengmouren@gmail.com>",
+  "scripts": {
+    "build": "rollup -c"
+  },
   "keywords": [
     "wx-ci",
     "wechat",
@@ -26,5 +29,8 @@
     "miniprogram-ci": "^1.0.83",
     "ora": "^5.1.0",
     "schema-utils": "^3.0.0"
+  },
+  "devDependencies": {
+    "rollup": "^2.33.3"
   }
 }

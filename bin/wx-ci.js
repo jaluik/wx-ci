@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const WxCi = require('../src/wxCi');
+const WxCi = require('../lib/wxCi');
 const argv = require('minimist')(process.argv.slice(2));
 
 const wxCi = new WxCi();
