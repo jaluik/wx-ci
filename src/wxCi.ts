@@ -1,14 +1,15 @@
-const fs = require('fs');
-const path = require('path');
-const inquirer = require('inquirer');
-const { program } = require('commander');
-const ci = require('miniprogram-ci');
-const childProcess = require('child_process');
-const ora = require('ora');
-const projectConfig = require('../package.json');
-const { validate } = require('schema-utils');
-const schema = require('./schema.json');
-const { checkConfigFile, warn, info, success, fail } = require('../utils');
+import fs from 'fs';
+import path from 'path';
+import inquirer from 'inquirer';
+import { program } from 'commander';
+import ci from 'miniprogram-ci';
+import childProcess from 'child_process';
+import ora from 'ora';
+import projectConfig from '../package.json';
+import { validate } from 'schema-utils';
+import schema from './schema.json';
+import { checkConfigFile, warn, info, success, fail } from '../utils';
+import { Schema } from 'schema-utils/declarations/validate';
 
 const defaultVersion = '1.0.0';
 const defaultDesc = `${
@@ -118,7 +119,7 @@ class WxCi {
       const baseConfig = require('./wxci.config');
       //完整配置文件
       const completeConfig = { ...baseConfig, ...config };
-      validate(schema, completeConfig);
+      validate(schema as Schema, completeConfig);
       console.log(completeConfig.title);
 
       const questions = [
@@ -174,4 +175,4 @@ class WxCi {
   }
 }
 
-module.exports = WxCi;
+export default WxCi;

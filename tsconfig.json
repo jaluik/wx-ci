@@ -3,8 +3,13 @@
     "module": "CommonJS",
     "noImplicitAny": true,
     "removeComments": true,
+    "moduleResolution": "node",
     "preserveConstEnums": true,
-    "sourceMap": true
+    "sourceMap": true,
+    //支持了import fs from 'fs'这种语法
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "types": ["node"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]

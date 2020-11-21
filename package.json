@@ -31,7 +31,12 @@
     "schema-utils": "^3.0.0"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^16.0.0",
+    "@rollup/plugin-node-resolve": "^10.0.0",
+    "@types/inquirer": "^7.3.1",
+    "@types/minimist": "^1.2.1",
     "@types/node": "^14.14.9",
-    "rollup": "^2.33.3"
+    "rollup": "^2.33.3",
+    "rollup-plugin-preserve-shebangs": "^0.2.0"
   }
 }
