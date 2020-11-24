@@ -78,7 +78,7 @@ class WxCi {
     try {
       await new Promise((resolve, reject) => {
         const rs = fs.createReadStream(
-          path.resolve(__dirname, '../src/wxci.config.js')
+          path.resolve(__dirname, '../lib/wxci.config.js')
         );
         const ws = fs.createWriteStream(
           path.resolve(process.cwd(), 'wxci.config.js')
@@ -116,7 +116,7 @@ class WxCi {
         'wxci.config.js'
       ));
 
-      const baseConfig = require('./wxci.config');
+      const baseConfig = require(path.resolve(process.cwd(), 'wxci.config.js'));
       //完整配置文件
       const completeConfig = { ...baseConfig, ...config };
       validate(schema as Schema, completeConfig);
