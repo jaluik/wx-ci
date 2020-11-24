@@ -1,6 +1,6 @@
 {
   "name": "wx-ci",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "main": "bin/wx-ci.js",
   "bin": {
     "wx-ci": "bin/wx-ci.js"
@@ -8,7 +8,8 @@
   "repository": "git@github.com:jaluik/wx-ci.git",
   "author": "jaluik <cqzhengmouren@gmail.com>",
   "scripts": {
-    "build": "rollup -c"
+    "clean": "rm -rf ./bin/ ./lib/ ",
+    "build": "yarn clean && rollup -c"
   },
   "keywords": [
     "wx-ci",
@@ -42,5 +43,9 @@
     "rollup-plugin-preserve-shebangs": "^0.2.0",
     "rollup-plugin-typescript": "^1.0.1",
     "typescript": "^4.1.2"
-  }
+  },
+  "files": [
+    "bin/",
+    "lib/"
+  ]
 }
