@@ -81,6 +81,7 @@ wx-ci
 |**`preCommand`**|`command[]`|false|[]|上传小程序源码前执行的脚本|
 |**`version`**|`{String}`|false|1.0.0|小程序默认上传的版本号(上传时可修改)|
 |**`desc`**|`{String}`|false|{m}月{day}日更新|小程序默认上传的备注信息(上传时可修改)|
+|**`noQuestions`**|`{Boolean}`|false|false|上传时不显示问题|
 |**`setting`**|`setting`|false|{}|小程序每次上传的项目配置信息|
 
 `command`可配置选项如下

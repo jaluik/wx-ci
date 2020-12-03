@@ -28,6 +28,10 @@
       "description": "小程序预览模式配置",
       "type": "object"
     },
+    "noQuestions": {
+      "description": "上传时不显示问题",
+      "type": "boolean"
+    },
     "preCommand": {
       "description": "上传前执行脚本",
       "type": "array",
