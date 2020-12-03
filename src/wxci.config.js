@@ -51,7 +51,7 @@ module.exports = {
   //二维码文件保存路径
   qrcodeOutputDest: 'destination.jpg',
   //见场景值列表
-  scene: 'destination.jpg',
+  scene: '',
   //预览页面路径启动参数
-  searchQuery: 'destination.jpg',
+  searchQuery: '',
 };

@@ -49,7 +49,7 @@ npx wx-ci -v
 
 ## 快速开始
 
-快速生成配置文件
+### 快速生成配置文件
 
 ```console
 wx-ci init
@@ -57,13 +57,32 @@ wx-ci init
 
 执行完成后，会在当前目录生成 wxci.config.js 配置文件，**各参数含义均有备注，也可参考本文档**
 
+### 上传版本
+
 在 package.json 同级目录执行上传流程
 
+#### 上传体验版本
+
 ```console
-wx-ci
+wx-ci upload
+```
+
+#### 上传预览版本
+
+```console
+wx-ci preview
 ```
 
 执行这段脚本，如果最后提示上传成功，恭喜，小程序已经成功上传啦！
+
+如果需要关闭**脚本提示文字**
+可以增加参数选项`-q` 开启静默模式
+
+```console
+wx-ci upload -q
+```
+
+此时将不再提示手动输入版本号及上传描述，而是读取配置文件的上传描述
 
 ## 可用配置
 
@@ -83,6 +102,11 @@ wx-ci
 |**`desc`**|`{String}`|false|{m}月{day}日更新|小程序默认上传的备注信息(上传时可修改)|
 |**`noQuestions`**|`{Boolean}`|false|false|上传时不显示问题|
 |**`setting`**|`setting`|false|{}|小程序每次上传的项目配置信息|
+|**`robot`**|`{Number}`|false|1|小程序每次上传的项目配置信息|
+|**`qrcodeFormat`**|`{String}`|false|{}|返回二维码文件的格式 "image" 或 "base64"， 默认值 "terminal" 供调试用|
+|**`qrcodeOutputDest`**|`{String}`|true|{}|二维码文件保存路径|
+|**`scene`**|`{Number}`|false|{}|[见场景值列表](https://developers.weixin.qq.com/miniprogram/dev/reference/scene-list.html)|
+|**`searchQuery`**|`{String}`|false|{}|预览页面路径启动参数|
 
 `command`可配置选项如下
 
@@ -153,6 +177,16 @@ module.exports = {
     //对应于微信开发者工具的 "上传时样式自动补全"
     autoPrefixWXSS: false,
   },
+  //指定使用哪一个 ci 机器人，可选值：1 ~ 30
+  robot: 1,
+  //返回二维码文件的格式 "image" 或 "base64"， 默认值 "terminal" 供调试用
+  qrcodeFormat: 'terminal',
+  //二维码文件保存路径
+  qrcodeOutputDest: 'destination.jpg',
+  //见场景值列表
+  scene: 'destination.jpg',
+  //预览页面路径启动参数
+  searchQuery: 'destination.jpg',
 };
 ```
 
