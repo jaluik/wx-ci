@@ -3,7 +3,8 @@ node_js:
   - lts/*
 install:
   - yarn
-before_deploy: 'yarn build'
+script:
+  - yarn deploy
 deploy:
   provider: npm
   email: cqzhengmouren@gmail.com
