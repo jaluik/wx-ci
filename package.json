@@ -1,6 +1,6 @@
 {
   "name": "wx-ci",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "main": "bin/wx-ci.js",
   "bin": {
     "wx-ci": "bin/wx-ci.js"
@@ -10,8 +10,7 @@
   "scripts": {
     "clean": "rm -rf ./bin/ ./lib/ ",
     "dev": "yarn clean && rollup -c -w",
-    "build": "yarn clean && rollup -c",
-    "deploy": "yarn clean && rollup -c && npm version patch"
+    "build": "yarn clean && rollup -c"
   },
   "keywords": [
     "wx-ci",
