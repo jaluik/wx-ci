@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - lts/*
+install:
+  - yarn
+script:
+  - yarn publish
+deploy:
+  provider: npm
+  email: cqzhengmouren@gmail.com
+  api_key: '$NPM_TOKEN'
+  on:
+    tags: true
+    repo: jaluik/wx-ci
+  skip_cleanup: 'true'

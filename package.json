@@ -10,7 +10,8 @@
   "scripts": {
     "clean": "rm -rf ./bin/ ./lib/ ",
     "dev": "yarn clean && rollup -c -w",
-    "build": "yarn clean && rollup -c"
+    "build": "yarn clean && rollup -c",
+    "publish": "yarn clean && rollup -c && npm version parch"
   },
   "keywords": [
     "wx-ci",
