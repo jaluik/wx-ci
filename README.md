@@ -76,6 +76,8 @@ wx-ci
 |**`type`**|`{String}`|true|miniProgram|请勿修改|
 |**`projectPath`**|`{String}`|true|dist|小程序生成目录|
 |**`privateKeyPath`**|`{String}`|true|miniprogram.upload.key|小程序钥匙目录，需要在小程序后台下载|
+|**`previewMode`**|`{Boolean}`|false|false|是否是小程序预览模式|
+|**`previewConfig`**| [previewConfig](https://www.npmjs.com/package/miniprogram-ci#%E5%8F%82%E6%95%B0-1) |false|false|小程序预览模式配置|
 |**`preCommand`**|`command[]`|false|[]|上传小程序源码前执行的脚本|
 |**`version`**|`{String}`|false|1.0.0|小程序默认上传的版本号(上传时可修改)|
 |**`desc`**|`{String}`|false|{m}月{day}日更新|小程序默认上传的备注信息(上传时可修改)|

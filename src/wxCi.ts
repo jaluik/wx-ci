@@ -162,13 +162,21 @@ class WxCi {
         projectPath,
         privateKeyPath,
       });
-      await ci.upload({
-        project,
-        version,
-        desc,
-        setting,
-      });
-      success('上传成功');
+      if (completeConfig.previewMode) {
+        await ci.preview({
+          project,
+          ...completeConfig.previewConfig
+        })
+        success('预览成功');
+      } else {
+        await ci.upload({
+          project,
+          version,
+          desc,
+          setting,
+        });
+        success('上传成功');
+      }
     } catch (e) {
       fail(e.message);
     }
