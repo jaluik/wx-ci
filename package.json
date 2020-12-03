@@ -31,7 +31,8 @@
     "minimist": "^1.2.0",
     "miniprogram-ci": "^1.0.83",
     "ora": "^5.1.0",
-    "schema-utils": "^3.0.0"
+    "schema-utils": "^3.0.0",
+    "shelljs": "^0.8.4"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^16.0.0",

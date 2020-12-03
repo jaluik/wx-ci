@@ -10,12 +10,28 @@ import { validate } from 'schema-utils';
 import schema from './schema.json';
 import { checkConfigFile, warn, info, success, fail } from '../utils';
 import { Schema } from 'schema-utils/declarations/validate';
+import {cloudAPIAgentURL} from "miniprogram-ci/dist/@types/utils/url_config";
 const child_process = require('child_process');
+const shell = require('shelljs')
+
+const getDefaultDesc = () => {
+  let _cmd = `git log -1 \
+  --date=iso --pretty=format:'{"commit": "%h","author": "%aN <%aE>","date": "%ad","message": "%s"},' \
+  $@ | \
+  perl -pe 'BEGIN{print "["}; END{print "]\n"}' | \
+  perl -pe 's/},]/}]/'`
+  return new Promise((resolve, reject) => {
+    shell.exec(_cmd, (code: number, stdout: any, stderr: any) => {
+      if (code) {
+        reject(stderr)
+      } else {
+        resolve(JSON.parse(stdout)[0])
+      }
+    })
+  })
+}
 
 const defaultVersion = '1.0.0';
-const defaultDesc = `${
-  new Date().getMonth() + 1
-}月${new Date().getDate()}日更新`;
 
 class WxCi {
   constructor() {
@@ -131,6 +147,10 @@ class WxCi {
       const completeConfig = { ...baseConfig, ...config };
       validate(schema as Schema, completeConfig);
 
+      const defaultDesc = await getDefaultDesc().then(({commit,author,date,message}) =>
+        `提交：${commit}, 作者：${author}, 日期: ${date}, ${message}`
+      );
+
       if (this.silentMode()) {
         completeConfig.version = completeConfig.version || defaultVersion;
         completeConfig.desc = completeConfig.desc || defaultDesc;
@@ -179,6 +199,7 @@ class WxCi {
       } = completeConfig;
 
       await this.execPreCommand(preCommand);
+      child_process.spawn('cp', ['-r', 'project.config.json', projectPath]);
 
       info('正在上传中');
       const project = new ci.Project({
