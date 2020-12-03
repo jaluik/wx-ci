@@ -13,6 +13,25 @@
       "description": "小程序钥匙目录",
       "type": "string"
     },
+    "type": {
+      "description": "ci项目类型",
+      "type": "string",
+      "enum": [
+        "miniProgram"
+      ]
+    },
+    "previewMode": {
+      "description": "是否是小程序预览模式",
+      "type": "boolean"
+    },
+    "previewConfig": {
+      "description": "小程序预览模式配置",
+      "type": "object"
+    },
+    "noQuestions": {
+      "description": "上传时不显示问题",
+      "type": "boolean"
+    },
     "preCommand": {
       "description": "上传前执行脚本",
       "type": "array",
@@ -31,5 +50,11 @@
       }
     }
   },
+  "required": [
+    "appid",
+    "projectPath",
+    "privateKeyPath",
+    "type"
+  ],
   "additionalProperties": true
 }

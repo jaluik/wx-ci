@@ -122,27 +122,30 @@ class WxCi {
       validate(schema as Schema, completeConfig);
       console.log(completeConfig.title);
 
-      const questions = [
-        {
-          type: 'input',
-          name: 'version',
-          message: '请输入版本号',
-          default: function () {
-            return completeConfig.version || defaultVersion;
+      let { version = defaultVersion, desc = defaultDesc } = completeConfig;
+      if (!completeConfig.noQuestions) {
+        const questions = [
+          {
+            type: 'input',
+            name: 'version',
+            message: '请输入版本号',
+            default: function () {
+              return completeConfig.version || defaultVersion;
+            },
           },
-        },
-        {
-          type: 'input',
-          name: 'desc',
-          message: '请输入上传描述',
-          default: function () {
-            return completeConfig.desc || defaultDesc;
+          {
+            type: 'input',
+            name: 'desc',
+            message: '请输入上传描述',
+            default: function () {
+              return completeConfig.desc || defaultDesc;
+            },
           },
-        },
-      ];
-      info(completeConfig.desc);
-      const answer = await inquirer.prompt(questions);
-      const { version, desc } = answer;
+        ];
+        info(completeConfig.desc);
+        const answer = await inquirer.prompt(questions);
+        ({ version, desc } = answer);
+      }
 
       const {
         appid,
@@ -162,13 +165,21 @@ class WxCi {
         projectPath,
         privateKeyPath,
       });
-      await ci.upload({
-        project,
-        version,
-        desc,
-        setting,
-      });
-      success('上传成功');
+      if (completeConfig.previewMode) {
+        await ci.preview({
+          project,
+          ...completeConfig.previewConfig
+        })
+        success('预览成功');
+      } else {
+        await ci.upload({
+          project,
+          version,
+          desc,
+          setting,
+        });
+        success('上传成功');
+      }
     } catch (e) {
       fail(e.message);
     }
