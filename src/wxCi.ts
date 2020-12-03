@@ -20,7 +20,7 @@ class WxCi {
   constructor() {
     program
       .version(projectConfig.version, '-v, --version', '输出当前版本号')
-      .option('-y, --yes', '以默认值初始化配置文件');
+      .option('-q, --quiet', '不提示输入直接上传');
     program.parse(process.argv, { from: 'user' });
   }
 
@@ -28,13 +28,21 @@ class WxCi {
    * 根据参数初始化
    */
   run(command: string) {
-    if (!command) {
-      this.deploy();
+    if (!command || command === 'upload') {
+      //默认为部署
+      this.upload();
       return;
     }
+    if (command === 'preview') {
+      //默认为部署
+      this.preview();
+      return;
+    }
+
     if (command === 'init') {
       //TODO
       this.generateDefault();
+      return;
       // if (program.yes) {
       //   //以生成默认配置文件夹
       //   this.generateDefault();
@@ -43,6 +51,11 @@ class WxCi {
       //   this.generateConfig();
       // }
     }
+  }
+
+  /** 是否为静默模式 */
+  silentMode() {
+    return Boolean(program.quiet);
   }
 
   /**
@@ -95,17 +108,13 @@ class WxCi {
     }
   }
 
-  /**
-   * 生成配置文件
-   */
+  /** 生成配置文件 */
   generateConfig() {
     console.log('询问生成');
   }
 
-  /**
-   * 执行上传打包脚本
-   */
-  async deploy() {
+  /** 获取完整的配置文件 */
+  async getCompleteConfig() {
     try {
       if (!checkConfigFile()) {
         warn("配置文件不存在，请执行 'wx-ci init'生成配置文件");
@@ -120,33 +129,45 @@ class WxCi {
       //完整配置文件
       const completeConfig = { ...baseConfig, ...config };
       validate(schema as Schema, completeConfig);
-      console.log(completeConfig.title);
 
-      let { version = defaultVersion, desc = defaultDesc } = completeConfig;
-      if (!completeConfig.noQuestions) {
-        const questions = [
-          {
-            type: 'input',
-            name: 'version',
-            message: '请输入版本号',
-            default: function () {
-              return completeConfig.version || defaultVersion;
-            },
-          },
-          {
-            type: 'input',
-            name: 'desc',
-            message: '请输入上传描述',
-            default: function () {
-              return completeConfig.desc || defaultDesc;
-            },
-          },
-        ];
-        info(completeConfig.desc);
-        const answer = await inquirer.prompt(questions);
-        ({ version, desc } = answer);
+      if (this.silentMode()) {
+        completeConfig.version = completeConfig.version || defaultVersion;
+        completeConfig.desc = completeConfig.desc || defaultDesc;
+        return completeConfig;
       }
+      const questions = [
+        {
+          type: 'input',
+          name: 'version',
+          message: '请输入版本号',
+          default: function () {
+            return completeConfig.version || defaultVersion;
+          },
+        },
+        {
+          type: 'input',
+          name: 'desc',
+          message: '请输入上传描述',
+          default: function () {
+            return completeConfig.desc || defaultDesc;
+          },
+        },
+      ];
+      info(completeConfig.desc);
+      const { version, desc } = await inquirer.prompt(questions);
+      completeConfig.version = version;
+      completeConfig.desc = desc;
+      return completeConfig;
+    } catch (e) {
+      fail(e.message);
+    }
+  }
 
+  /** 上传 */
+  async upload() {
+    try {
+      const completeConfig = await this.getCompleteConfig();
+      const { version, desc } = completeConfig;
       const {
         appid,
         type,
@@ -165,21 +186,59 @@ class WxCi {
         projectPath,
         privateKeyPath,
       });
-      if (completeConfig.previewMode) {
-        await ci.preview({
-          project,
-          ...completeConfig.previewConfig
-        })
-        success('预览成功');
-      } else {
-        await ci.upload({
-          project,
-          version,
-          desc,
-          setting,
-        });
-        success('上传成功');
-      }
+      await ci.upload({
+        project,
+        version,
+        desc,
+        setting,
+      });
+      success('上传成功');
+    } catch (e) {
+      fail(e.message);
+    }
+  }
+
+  /** 执行上传打包脚本*/
+  async preview() {
+    try {
+      const completeConfig = await this.getCompleteConfig();
+      const {
+        appid,
+        type,
+        version,
+        projectPath,
+        privateKeyPath,
+        robot,
+        qrcodeFormat,
+        qrcodeOutputDest,
+        pagePath,
+        searchQuery,
+        desc,
+        setting,
+        preCommand = [],
+      } = completeConfig;
+
+      await this.execPreCommand(preCommand);
+
+      info('正在上传中');
+      const project = new ci.Project({
+        appid,
+        type,
+        projectPath,
+        privateKeyPath,
+      });
+      await ci.preview({
+        project,
+        version,
+        desc,
+        setting,
+        robot,
+        qrcodeFormat,
+        qrcodeOutputDest,
+        pagePath,
+        searchQuery,
+      });
+      success('上传预览成功');
     } catch (e) {
       fail(e.message);
     }

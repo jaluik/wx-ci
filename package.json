@@ -1,6 +1,6 @@
 {
   "name": "wx-ci",
-  "version": "0.0.10",
+  "version": "1.0.0",
   "main": "bin/wx-ci.js",
   "bin": {
     "wx-ci": "bin/wx-ci.js"
@@ -9,6 +9,7 @@
   "author": "jaluik <cqzhengmouren@gmail.com>",
   "scripts": {
     "clean": "rm -rf ./bin/ ./lib/ ",
+    "dev": "yarn clean && rollup -c -w",
     "build": "yarn clean && rollup -c"
   },
   "keywords": [

@@ -44,4 +44,14 @@ module.exports = {
     //对应于微信开发者工具的 "上传时样式自动补全"
     autoPrefixWXSS: false,
   },
+  //指定使用哪一个 ci 机器人，可选值：1 ~ 30
+  robot: 1,
+  //返回二维码文件的格式 "image" 或 "base64"， 默认值 "terminal" 供调试用
+  qrcodeFormat: 'terminal',
+  //二维码文件保存路径
+  qrcodeOutputDest: 'destination.jpg',
+  //见场景值列表
+  scene: 'destination.jpg',
+  //预览页面路径启动参数
+  searchQuery: 'destination.jpg',
 };
