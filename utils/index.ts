@@ -2,8 +2,8 @@ import path from 'path';
 import fs from 'fs';
 import ora from 'ora';
 
-export const checkConfigFile = () => {
-  const configPath = path.resolve(`${process.cwd()}`, 'wxci.config.js');
+export const checkConfigFile = (filePath: string) => {
+  const configPath = path.resolve(`${process.cwd()}`, filePath);
   return fs.existsSync(configPath);
 };
 

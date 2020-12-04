@@ -41,7 +41,8 @@ class WxCi {
   constructor() {
     program
       .version(projectConfig.version, '-v, --version', '输出当前版本号')
-      .option('-q, --quiet', '不提示输入直接上传');
+      .option('-q, --quiet', '不提示输入直接上传')
+      .option('-f, --file <file>', '指定配置文件');
     program.parse(process.argv, { from: 'user' });
   }
 
@@ -137,24 +138,26 @@ class WxCi {
   /** 获取完整的配置文件 */
   async getCompleteConfig() {
     try {
-      if (!checkConfigFile()) {
+      const filePath = program.file || 'wxci.config.js';
+      if (!checkConfigFile(filePath)) {
         warn("配置文件不存在，请执行 'wx-ci init'生成配置文件");
-        return;
+        process.exit(1);
       }
-      const config = require(path.resolve(
-        `${process.cwd()}`,
-        'wxci.config.js'
+      const config = require(path.resolve(`${process.cwd()}`, filePath));
+      const baseConfig = require(path.resolve(
+        __dirname,
+        '../lib/wxci.config.js'
       ));
-
-      const baseConfig = require(path.resolve(process.cwd(), 'wxci.config.js'));
       //完整配置文件
       const completeConfig = { ...baseConfig, ...config };
       validate(schema as Schema, completeConfig);
 
-      const defaultDesc = await getDefaultDesc().then(
-        ({ commit, author, date, message }) =>
-          `提交：${commit}, 作者：${author}, 日期: ${date}, ${message}`
-      );
+      const defaultDesc = await getDefaultDesc()
+        .then(
+          ({ commit, author, date, message }) =>
+            `提交：${commit}, 作者：${author}, 日期: ${date}, ${message}`
+        )
+        .catch(() => Promise.resolve('提交'));
 
       if (this.silentMode()) {
         completeConfig.version = completeConfig.version || defaultVersion;
@@ -186,6 +189,7 @@ class WxCi {
       return completeConfig;
     } catch (e) {
       fail(e.message);
+      process.exit(1);
     }
   }
 
@@ -220,6 +224,7 @@ class WxCi {
       success('上传成功');
     } catch (e) {
       fail(e.message);
+      process.exit(1);
     }
   }
 
@@ -267,6 +272,7 @@ class WxCi {
       success('上传预览成功');
     } catch (e) {
       fail(e.message);
+      process.exit(1);
     }
   }
 }
