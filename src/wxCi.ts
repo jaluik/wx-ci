@@ -10,7 +10,7 @@ import { validate } from 'schema-utils';
 import schema from './schema.json';
 import { checkConfigFile, warn, info, success, fail } from '../utils';
 import { Schema } from 'schema-utils/declarations/validate';
-import { cloudAPIAgentURL } from 'miniprogram-ci/dist/@types/utils/url_config';
+// import { cloudAPIAgentURL } from 'miniprogram-ci/dist/@types/utils/url_config';
 const child_process = require('child_process');
 const shell = require('shelljs');
 
@@ -204,8 +204,6 @@ class WxCi {
       } = completeConfig;
 
       await this.execPreCommand(preCommand);
-      child_process.spawn('cp', ['-r', 'project.config.json', projectPath]);
-
       info('正在上传中');
       const project = new ci.Project({
         appid,
