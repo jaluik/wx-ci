@@ -75,7 +75,7 @@ wx-ci preview
 
 执行这段脚本，如果最后提示上传成功，恭喜，小程序已经成功上传啦！
 
-如果需要关闭**脚本提示文字**
+如果需要关闭**命令行输入版本号和上传描述**
 可以增加参数选项`-q` 开启静默模式
 
 ```console
@@ -83,6 +83,15 @@ wx-ci upload -q
 ```
 
 此时将不再提示手动输入版本号及上传描述，而是读取配置文件的上传描述
+
+如果需要指定特定文件作为配置文件
+可以增加参数选项`-f` 指定文件
+
+```console
+wx-ci upload -f <filename>
+```
+
+此时将使用指定的文件作为 wx-ci 配置文件
 
 ## 可用配置
 
@@ -184,9 +193,9 @@ module.exports = {
   //二维码文件保存路径
   qrcodeOutputDest: 'destination.jpg',
   //见场景值列表
-  scene: 'destination.jpg',
+  scene: '',
   //预览页面路径启动参数
-  searchQuery: 'destination.jpg',
+  searchQuery: '',
 };
 ```
 
