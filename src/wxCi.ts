@@ -93,7 +93,7 @@ class WxCi {
         childProcess.exec(item.command, { cwd: process.cwd() }, (e: Error) => {
           if (e === null) {
             spinner.succeed(`${item.desc}成功\n`);
-            resolve();
+            resolve(void 0);
           } else {
             throw e;
           }
@@ -201,6 +201,7 @@ class WxCi {
       const {
         appid,
         type,
+        robot,
         projectPath,
         privateKeyPath,
         setting,
@@ -220,6 +221,7 @@ class WxCi {
         version,
         desc,
         setting,
+        robot,
       });
       success('上传成功');
     } catch (e) {
