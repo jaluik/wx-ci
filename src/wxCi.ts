@@ -47,11 +47,10 @@ class WxCi {
     const program = new Command();
     program
       .addArgument(
-        new Argument('<action>', 'preview:开发版, upload:体验版').choices([
-          'preview',
-          'upload',
-          'init',
-        ])
+        new Argument(
+          '<action>',
+          'preview:开发版, upload:体验版, init:初始配置文件'
+        ).choices(['preview', 'upload', 'init'])
       )
       .version(projectConfig.version, '-v, --version', '输出当前版本号')
       .helpOption('-h, --help', '查看帮助信息')
