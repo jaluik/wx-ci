@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import inquirer from 'inquirer';
-import { program } from 'commander';
+import { Command, Argument } from 'commander';
 import ci from 'miniprogram-ci';
 import childProcess from 'child_process';
 import ora from 'ora';
@@ -38,46 +38,60 @@ const getDefaultDesc = () => {
 const defaultVersion = '1.0.0';
 
 class WxCi {
+  readonly program;
+  private action: 'preview' | 'upload' | 'init';
+  private options: {
+    file?: string;
+    quiet?: boolean;
+  };
+
   constructor() {
+    const program = new Command();
     program
+      .addArgument(
+        new Argument('<action>', 'preview:开发版, upload:体验版').choices([
+          'preview',
+          'upload',
+          'init',
+        ])
+      )
       .version(projectConfig.version, '-v, --version', '输出当前版本号')
+      .helpOption('-h, --help', '查看帮助信息')
       .option('-q, --quiet', '不提示输入直接上传')
-      .option('-f, --file <file>', '指定配置文件');
-    program.parse(process.argv, { from: 'user' });
+      .option('-f, --file <file>', '指定配置文件')
+      .action((action, options) => {
+        this.action = action;
+        this.options = options;
+      });
+
+    this.program = program;
+    this.program.parse();
   }
 
   /**
    * 根据参数初始化
    */
-  run(command: string) {
-    if (!command || command === 'upload') {
+  run() {
+    if (this.action === 'upload') {
       //默认为部署
       this.upload();
       return;
     }
-    if (command === 'preview') {
+    if (this.action === 'preview') {
       //默认为部署
       this.preview();
       return;
     }
 
-    if (command === 'init') {
-      //TODO
+    if (this.action === 'init') {
       this.generateDefault();
       return;
-      // if (program.yes) {
-      //   //以生成默认配置文件夹
-      //   this.generateDefault();
-      // } else {
-      //   //询问的方式生成配置
-      //   this.generateConfig();
-      // }
     }
   }
 
   /** 是否为静默模式 */
   silentMode() {
-    return Boolean(program.quiet);
+    return Boolean(this.options.quiet);
   }
 
   /**
@@ -138,7 +152,7 @@ class WxCi {
   /** 获取完整的配置文件 */
   async getCompleteConfig() {
     try {
-      const filePath = program.file || 'wxci.config.js';
+      const filePath = this.options.file || 'wxci.config.js';
       if (!checkConfigFile(filePath)) {
         warn("配置文件不存在，请执行 'wx-ci init'生成配置文件");
         process.exit(1);
