@@ -26,6 +26,7 @@
   "license": "MIT",
   "dependencies": {
     "commander": "^8.3.0",
+    "fs-extra": "^10.0.0",
     "inquirer": "^8.2.0",
     "miniprogram-ci": "^1.6.1",
     "ora": "^5.1.0",

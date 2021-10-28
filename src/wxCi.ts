@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
 import inquirer from 'inquirer';
 import { Command, Argument } from 'commander';
@@ -10,8 +10,6 @@ import { validate } from 'schema-utils';
 import schema from './schema.json';
 import { checkConfigFile, warn, info, success, fail } from '../utils';
 import { Schema } from 'schema-utils/declarations/validate';
-// import { cloudAPIAgentURL } from 'miniprogram-ci/dist/@types/utils/url_config';
-const child_process = require('child_process');
 const shell = require('shelljs');
 
 const getDefaultDesc = () => {
@@ -125,28 +123,14 @@ class WxCi {
   async generateDefault() {
     info('正在生成配置文件');
     try {
-      await new Promise((resolve, reject) => {
-        const rs = fs.createReadStream(
-          path.resolve(__dirname, '../lib/wxci.config.js')
-        );
-        const ws = fs.createWriteStream(
-          path.resolve(process.cwd(), 'wxci.config.js')
-        );
-        rs.pipe(ws);
-        ws.on('close', resolve);
-        ws.on('error', reject);
-      });
-
+      const sourcePath = path.resolve(__dirname, '../lib/wxci.config.js');
+      const distPath = path.resolve(process.cwd(), 'wxci.config.js');
+      await fs.copyFile(sourcePath, distPath);
       success('生成配置文件成功');
     } catch (err) {
       fail('生成配置文件失败');
       fail(err.message);
     }
-  }
-
-  /** 生成配置文件 */
-  generateConfig() {
-    console.log('询问生成');
   }
 
   /** 获取完整的配置文件 */
@@ -165,17 +149,18 @@ class WxCi {
       //完整配置文件
       const completeConfig = { ...baseConfig, ...config };
       validate(schema as Schema, completeConfig);
-
-      const defaultDesc = await getDefaultDesc()
-        .then(
-          ({ commit, author, date, message }) =>
-            `提交：${commit}, 作者：${author}, 日期: ${date}, ${message}`
-        )
-        .catch(() => Promise.resolve('提交'));
+      if (!completeConfig.desc) {
+        completeConfig.desc = await getDefaultDesc()
+          .then(
+            ({ commit, author, date, message }) =>
+              `提交：${commit}, 作者：${author}, 日期: ${date}, ${message}`
+          )
+          .catch(() => Promise.resolve('提交'));
+      }
 
       if (this.silentMode()) {
         completeConfig.version = completeConfig.version || defaultVersion;
-        completeConfig.desc = completeConfig.desc || defaultDesc;
+        completeConfig.desc = completeConfig.desc;
         return completeConfig;
       }
       const questions = [
@@ -192,7 +177,7 @@ class WxCi {
           name: 'desc',
           message: '请输入上传描述',
           default: function () {
-            return completeConfig.desc || defaultDesc;
+            return completeConfig.desc;
           },
         },
       ];
@@ -211,7 +196,6 @@ class WxCi {
   async upload() {
     try {
       const completeConfig = await this.getCompleteConfig();
-      const { version, desc } = completeConfig;
       const {
         appid,
         type,
@@ -219,6 +203,8 @@ class WxCi {
         projectPath,
         privateKeyPath,
         setting,
+        version,
+        desc,
         preCommand = [],
       } = completeConfig;
 
@@ -265,7 +251,17 @@ class WxCi {
       } = completeConfig;
 
       await this.execPreCommand(preCommand);
-      child_process.spawn('cp', ['-r', 'project.config.json', projectPath]);
+      const srcProjectConfigPath = path.resolve(
+        process.cwd(),
+        'project.config.json'
+      );
+      const distProjectConfigPath = path.resolve(process.cwd(), projectPath);
+      if (
+        fs.existsSync(srcProjectConfigPath) &&
+        !fs.existsSync(distProjectConfigPath)
+      ) {
+        await fs.copyFile(srcProjectConfigPath, distProjectConfigPath);
+      }
 
       info('正在上传中');
       const project = new ci.Project({
